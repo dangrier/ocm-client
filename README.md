@@ -105,11 +105,47 @@ client := ocm.NewClient(ocm.WithHTTPClient(myHTTPClient))
 client := ocm.NewClient(ocm.WithAPIKey("your-key"))
 ```
 
+## MCP Server
+
+`ocm mcp` starts a [Model Context Protocol](https://modelcontextprotocol.io) server over stdio, exposing the OCM API as tools for use with Claude and other MCP clients.
+
+### Tools
+
+| Tool | Description |
+| --- | --- |
+| `get_locations` | List all locations, optionally filtered by type |
+| `get_location` | Fetch a single location by numeric code |
+| `get_location_by_name` | Look up a location by type and name |
+| `get_offences` | Query crime offences for given location codes and date range |
+
+`get_offences` accepts either `date_from`/`date_to` (YYYY-MM-DD) or a `days` lookback (default 90).
+
+### Configuration
+
+Add to your Claude Code MCP config (e.g. `.claude/settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "ocm": {
+      "command": "ocm",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Or run directly:
+
+```sh
+ocm mcp
+```
+
 ## Architecture
 
 ```txt
 cmd/ocm/          Entry point (embeds IANA timezone data)
-cli/              Cobra commands: locations, location, offences
+cli/              Cobra commands: locations, location, offences, mcp
 ocm/              Public library: Client, Location, Offence, models
 internal/
   api/            HTTP layer — fetches geobuf responses from AWS API
@@ -120,7 +156,7 @@ internal/
 ## Running tests
 
 ```sh
-go test ./...
+go test -v ./...
 ```
 
 ## Data notes
