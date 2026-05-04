@@ -103,10 +103,7 @@ func TestGetLocations_CacheHit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("second call: %v", err)
 	}
-	// Same underlying map must be returned (pointer equality).
-	if &m1 == &m2 {
-		// map values are equal — just check length as a proxy
-	}
+
 	if len(m1) != len(m2) {
 		t.Errorf("cache returned different map lengths: %d vs %d", len(m1), len(m2))
 	}

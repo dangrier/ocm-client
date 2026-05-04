@@ -7,7 +7,7 @@ import (
 	cairngeojson "github.com/cairnapp/go-geobuf/pkg/geojson"
 	"github.com/cairnapp/go-geobuf/pkg/geometry"
 	geobufproto "github.com/cairnapp/go-geobuf/proto"
-	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/proto" //nolint:staticcheck // upstream deps do not support upgrade
 )
 
 // Feature is a narrow view of a decoded GeoJSON feature — just what the adapter

@@ -1,0 +1,57 @@
+name: pull-request
+permissions:
+    contents: write
+    pull-requests: write
+on:
+    - pull_request
+
+jobs:
+    build-app:
+        name: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+            - uses: extractions/setup-just@v2
+            - name: Build and test cli client
+              run: just
+    
+    golangci:
+        name: lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+            - name: golangci-lint
+              uses: golangci/golangci-lint-action@v9
+
+    coverage:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+              with:
+                  fetch-depth: 10
+            - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
+            - uses: gwatts/go-coverage-action@v2
+              id: coverage
+              with:
+                #   coverage-threshold: 80 # Add threshold later
+                  cover-pkg: ./...
+
+    security-checks:
+        name: security
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - name: Scan current project
+              uses: anchore/scan-action@v7
+              with:
+                  path: "."
+                  fail-build: true
+                  severity-cutoff: medium

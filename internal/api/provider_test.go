@@ -27,7 +27,6 @@ type rewriteTransport struct {
 
 func (r *rewriteTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req = req.Clone(req.Context())
-	req.URL.Host = req.URL.Host // keep path; swap scheme+host
 	// Replace the host portion so requests reach the test server.
 	parsed, _ := http.NewRequest(req.Method, r.base+req.URL.RequestURI(), req.Body)
 	parsed.Header = req.Header
