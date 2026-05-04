@@ -12,6 +12,8 @@ jobs:
         steps:
             - uses: actions/checkout@v6
             - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
             - uses: extractions/setup-just@v2
             - name: Build and test cli client
               run: just
@@ -22,6 +24,8 @@ jobs:
         steps:
             - uses: actions/checkout@v6
             - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
             - name: golangci-lint
               uses: golangci/golangci-lint-action@v9
 
@@ -32,6 +36,8 @@ jobs:
               with:
                   fetch-depth: 10
             - uses: actions/setup-go@v6
+              with:
+                  go-version-file: go.mod
             - uses: gwatts/go-coverage-action@v2
               id: coverage
               with:
