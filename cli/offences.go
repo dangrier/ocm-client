@@ -289,9 +289,15 @@ func writeOffences(format string, offs []*ocm.Offence, locNames map[int]string, 
 
 	default:
 		tw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-		fmt.Fprintln(tw, "DATE\tCATEGORY\tLOCATION")
+		_, err := fmt.Fprintln(tw, "DATE\tCATEGORY\tLOCATION")
+		if err != nil {
+			return err
+		}
 		for _, o := range offs {
-			fmt.Fprintf(tw, "%s\t%s\t%s\n", o.StartTime.Format("2006-01-02"), o.Category, resolveLoc(o.Location))
+			_, err := fmt.Fprintf(tw, "%s\t%s\t%s\n", o.StartTime.Format("2006-01-02"), o.Category, resolveLoc(o.Location))
+			if err != nil {
+				return err
+			}
 		}
 		return tw.Flush()
 	}
@@ -328,9 +334,15 @@ func writeSummary(format string, offs []*ocm.Offence) error {
 		return w.Error()
 	default:
 		tw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-		fmt.Fprintln(tw, "CATEGORY\tCOUNT")
+		_, err := fmt.Fprintln(tw, "CATEGORY\tCOUNT")
+		if err != nil {
+			return err
+		}
 		for _, r := range rows {
-			fmt.Fprintf(tw, "%s\t%d\n", r.Category, r.Count)
+			_, err := fmt.Fprintf(tw, "%s\t%d\n", r.Category, r.Count)
+			if err != nil {
+				return err
+			}
 		}
 		return tw.Flush()
 	}

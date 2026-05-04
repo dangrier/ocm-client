@@ -115,8 +115,6 @@ func TestNewProximityContext_BadFormat(t *testing.T) {
 
 // ---- proximityContext.filter ----
 
-func ptr(f float64) *float64 { return &f }
-
 func coord(lon, lat float64) *[2]float64 { c := [2]float64{lon, lat}; return &c }
 
 func TestFilter_WithinRadius(t *testing.T) {

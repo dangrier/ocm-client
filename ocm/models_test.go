@@ -90,7 +90,10 @@ func TestOffenceCategoryMarshalJSON_InStruct(t *testing.T) {
 		t.Fatalf("json.Marshal: %v", err)
 	}
 	var m map[string]interface{}
-	json.Unmarshal(b, &m)
+	err = json.Unmarshal(b, &m)
+	if err != nil {
+		t.Fatalf("json.Unmarshall: %v", err)
+	}
 	if got, ok := m["Category"]; !ok || got != "Drug Offences" {
 		t.Errorf("Category in JSON = %v, want %q", got, "Drug Offences")
 	}

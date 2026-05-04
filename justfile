@@ -19,6 +19,9 @@ install:
 test:
     go test -v ./...
 
+lint:
+    golangci-lint run
+
 release-build: clean
     GOOS=darwin GOARCH=arm64 go build -ldflags="{{ldFlags}}" -o out/release/ocm-darwin-arm64 ./cmd/...
     GOOS=linux GOARCH=arm64 go build -ldflags="{{ldFlags}}" -o out/release/ocm-linux-arm64 ./cmd/...

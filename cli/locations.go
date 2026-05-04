@@ -71,9 +71,15 @@ func writeLocations(format string, locs []*ocm.Location) error {
 		return json.NewEncoder(os.Stdout).Encode(locs)
 	default:
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-		fmt.Fprintln(w, "CODE\tTYPE\tNAME")
+		_, err := fmt.Fprintln(w, "CODE\tTYPE\tNAME")
+		if err != nil {
+			return err
+		}
 		for _, l := range locs {
-			fmt.Fprintf(w, "%d\t%s\t%s\n", l.Code, l.Type, l.Name)
+			_, err := fmt.Fprintf(w, "%d\t%s\t%s\n", l.Code, l.Type, l.Name)
+			if err != nil {
+				return err
+			}
 		}
 		return w.Flush()
 	}

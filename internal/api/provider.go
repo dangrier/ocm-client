@@ -71,7 +71,7 @@ func (p *Provider) get(ctx context.Context, url string, requiresAuth bool) ([]by
 	if err != nil {
 		return nil, fmt.Errorf("api: %s: %w", url, err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:all // who cares really if the body fails to close?
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
