@@ -15,6 +15,9 @@ type state struct {
 	output string
 }
 
+var Version = "development"
+var BuildDate = "unknown date"
+
 var s state
 
 var rootCmd = &cobra.Command{
@@ -23,6 +26,7 @@ var rootCmd = &cobra.Command{
 	Long: `ocm queries the QPS Online Crime Map API for publicly available
 crime statistics data. Not affiliated with the Queensland Police Service. See https://qps-ocm.s3-ap-southeast-2.amazonaws.com/index.html for the original web application.`,
 	SilenceUsage: true,
+	Version:      buildVersionString(),
 }
 
 func Execute() {
@@ -42,6 +46,10 @@ func init() {
 	rootCmd.AddCommand(locationsCmd)
 	rootCmd.AddCommand(locationCmd)
 	rootCmd.AddCommand(offencesCmd)
+}
+
+func buildVersionString() string {
+	return Version + " (built " + BuildDate + ")"
 }
 
 // clientWithTimeout returns a context with the default API timeout.

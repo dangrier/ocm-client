@@ -1,0 +1,38 @@
+name: pull-request
+permissions:
+    contents: read
+    pull-requests: write
+on:
+    - pull_request
+
+jobs:
+    build-app:
+        name: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: extractions/setup-just@v2
+            - name: Build and test cli client
+              run: just
+    
+    golangci:
+        name: lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: actions/setup-go@v6
+              with:
+                go-version: stable
+            - name: golangci-lint
+              uses: golangci/golangci-lint-action@v9
+
+    security-checks:
+        name: security
+        runs-on: ubuntu-latest
+        steps:
+            - name: Scan current project
+              uses: anchore/scan-action@v7
+              with:
+                  path: "."
+                  fail-build: true
+                  severity-cutoff: medium
